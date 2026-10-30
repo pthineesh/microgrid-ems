@@ -29,15 +29,18 @@ The raw CSV files are **not** included in this repository. See [`data/README.md`
 
 ## Results (customer 13, July 2012 to June 2013, as computed in the notebook)
 
-| Scenario | Annual grid import | Annual net cost |
-|---|---|---|
-| No battery | 3,323 kWh | 948 € |
-| Greedy EMS, 75 % efficiency | 2,110 kWh (−36.5 %) | 584 € |
-| Tariff-aware EMS, 90 % efficiency | 2,109 kWh (−36.5 %) | 547 € |
-| LP optimum (same battery, full year) | | 481 € |
+Annual net cost = grid purchases − feed-in revenue (0.08 €/kWh), for every scenario.
 
-- The greedy EMS costs about 12 % more than the LP optimum over the year.
-- Estimated savings of the tariff-aware EMS: about 400 €/year, i.e. a payback of roughly 12 years for a 5,000 € battery.
+| Scenario | Annual grid import | Annual grid export | Annual net cost |
+|---|---|---|---|
+| No battery | 3,323 kWh | 1,946 kWh | ≈ 793 € |
+| Greedy EMS, 75 % efficiency | 2,110 kWh (−36.5 %) | | not computed |
+| Tariff-aware EMS, 90 % efficiency | 2,109 kWh (−36.5 %) | 448 kWh | 547 € |
+| LP optimum (same battery, full year) | 2,163 kWh | 448 kWh | 481 € |
+
+- The tariff-aware EMS costs about 14 % more than the LP optimum over the year (547 € vs 481 €).
+- The LP imports more energy than the EMS but costs less: it charges the battery from the grid at off-peak price to avoid buying at peak price, which the greedy EMS never does.
+- Estimated savings of the tariff-aware EMS: about 246 €/year, i.e. a payback of roughly 20 years for a 5,000 € battery, longer than the battery's lifetime. Under these tariffs, the battery is not profitable for this household without subsidies.
 
 | Forecast model (next 30 min) | MAE | RMSE |
 |---|---|---|
@@ -55,6 +58,7 @@ The raw CSV files are **not** included in this repository. See [`data/README.md`
 - The greedy EMS is myopic; the forecasts are not yet coupled with the controller (next step: model predictive control).
 - Simplified tariffs, no battery degradation.
 - The LSTM scaler is fitted on the whole series before the chronological split, which slightly leaks test-set information.
+- The no-battery cost printed in the notebook (948 €) and the cost shown in the scenarios figure leave out feed-in revenue; the table above uses the same convention for every scenario.
 
 ## Repository layout
 
